@@ -5,6 +5,8 @@ import InputForm from './InputForm';
 import PredictionResults from './PredictionResults';
 import TrendGraph from './TrendGraph';
 import RoundComparison from './RoundComparison';
+import CandidateCountChart from './CandidateCountChart';
+import IntakeChart from './IntakeChart';
 
 const CutoffPredictorMain = () => {
     const [predictionData, setPredictionData] = useState([]);
@@ -182,25 +184,37 @@ const CutoffPredictorMain = () => {
                         </div>
                     )}
 
-                    {/* Results - Compact Single Page Layout */}
+                    {/* Results - Scrollable Layout */}
                     {results && (
-                        <div className="flex-1 overflow-hidden p-4 md:p-6 flex flex-col min-h-0">
-                            <div className="max-w-7xl w-full mx-auto flex flex-col h-full gap-4 md:gap-6">
-                                {/* Prediction Header - Reduce margin */}
-                                <div className="flex-shrink-0">
-                                    <PredictionResults results={results} />
-                                </div>
+                        <div className="flex-1 overflow-y-auto p-4 md:p-6">
+                            <div className="max-w-7xl w-full mx-auto space-y-6">
+                                {/* Prediction Header */}
+                                <PredictionResults results={results} />
 
-                                {/* Graph and Sidebar - Flex to fill remaining height */}
-                                <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-                                    {/* Graph - 2/3 width */}
-                                    <div className="lg:col-span-2 h-full min-h-0">
+                                {/* Main Content Grid */}
+                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                    {/* Left Column - Graphs (2/3 width) */}
+                                    <div className="lg:col-span-2 space-y-6">
+                                        {/* Cutoff Trend Graph */}
                                         <TrendGraph results={results} />
+
+                                        {/* Statistics Charts Row */}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <CandidateCountChart />
+                                            <IntakeChart
+                                                branchCode={results.prediction.branch_code}
+                                                branchName={results.prediction.branch_name}
+                                                category={results.prediction.category}
+                                                gender={results.prediction.gender}
+                                            />
+                                        </div>
                                     </div>
 
-                                    {/* Details Sidebar - 1/3 width */}
-                                    <div className="lg:col-span-1 h-full min-h-0 overflow-y-auto pr-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:none]">
-                                        <RoundComparison results={results} historicalData={historicalData} />
+                                    {/* Right Column - Historical Data (1/3 width, sticky) */}
+                                    <div className="lg:col-span-1">
+                                        <div className="lg:sticky lg:top-4">
+                                            <RoundComparison results={results} historicalData={historicalData} />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
