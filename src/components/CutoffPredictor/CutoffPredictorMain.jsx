@@ -21,7 +21,9 @@ const CutoffPredictorMain = () => {
     });
     const [results, setResults] = useState(null);
     const [isDownloading, setIsDownloading] = useState(false);
+    const [showScrollHint, setShowScrollHint] = useState(true);
     const resultsRef = useRef(null);
+    const mainRef = useRef(null);
 
     useEffect(() => {
         const loadPredictionData = async () => {
@@ -176,8 +178,8 @@ const CutoffPredictorMain = () => {
         <div className="bg-orange-50 min-h-screen">
             {/* Responsive Layout */}
             <div className="flex flex-col lg:flex-row">
-                {/* Sidebar - Bold Standout Design */}
-                <aside className="w-full lg:w-80 bg-white lg:min-h-screen border-b-4 lg:border-r-4 lg:border-b-0 border-orange-500 shadow-[10px_0_40px_rgba(249,115,22,0.1)] relative z-20">
+                {/* Sidebar - Sticky on desktop */}
+                <aside className="w-full lg:w-80 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto bg-white border-b-4 lg:border-r-4 lg:border-b-0 border-orange-500 shadow-[10px_0_40px_rgba(249,115,22,0.1)] z-20 flex-shrink-0">
                     <InputForm
                         predictionData={predictionData}
                         onPredict={handlePrediction}
@@ -185,7 +187,7 @@ const CutoffPredictorMain = () => {
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 bg-orange-50">
+                <main ref={mainRef} className="flex-1 bg-orange-50">
                     {/* Welcome Screen */}
                     {!results && (
                         <div className="min-h-screen flex items-center justify-center p-6 md:p-12">
@@ -271,9 +273,9 @@ const CutoffPredictorMain = () => {
                         </div>
                     )}
 
-                    {/* Results Layout - No Scroll */}
+                    {/* Results Layout */}
                     {results && (
-                        <div className="p-4 md:p-6">
+                        <div className="p-4 md:p-6 pb-20 relative">
                             {/* Download Button */}
                             <div className="max-w-7xl mx-auto mb-4 flex justify-end" data-html2canvas-ignore="true">
                                 <button
@@ -303,7 +305,7 @@ const CutoffPredictorMain = () => {
                                         <TrendGraph results={results} />
 
                                         {/* Statistics Charts Row */}
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div id="charts-section" className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <CandidateCountChart />
                                             <IntakeChart
                                                 branchCode={results.prediction.branch_code}
@@ -318,6 +320,27 @@ const CutoffPredictorMain = () => {
                                     <div className="lg:col-span-1">
                                         <RoundComparison results={results} historicalData={historicalData} />
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Floating Scroll Indicator - Always Visible */}
+                    {results && showScrollHint && (
+                        <div
+                            className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 cursor-pointer"
+                            onClick={() => {
+                                window.scrollBy({ top: 400, behavior: 'smooth' });
+                                setShowScrollHint(false);
+                            }}
+                            data-html2canvas-ignore="true"
+                        >
+                            <div className="flex flex-col items-center animate-bounce">
+                                <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-orange-200 flex items-center gap-2">
+                                    <div className="w-6 h-10 border-2 border-orange-400 rounded-full flex justify-center pt-1">
+                                        <div className="w-1.5 h-2.5 bg-orange-500 rounded-full animate-scroll-mouse"></div>
+                                    </div>
+                                    <span className="text-orange-600 font-semibold text-sm">Scroll for more</span>
                                 </div>
                             </div>
                         </div>
@@ -355,6 +378,14 @@ const CutoffPredictorMain = () => {
         .animate-gradient-bg {
           background-size: 400% 400%;
           animation: gradient-bg 15s ease infinite;
+        }
+        @keyframes scroll-mouse {
+          0% { transform: translateY(0); opacity: 1; }
+          50% { transform: translateY(4px); opacity: 0.5; }
+          100% { transform: translateY(0); opacity: 1; }
+        }
+        .animate-scroll-mouse {
+          animation: scroll-mouse 1.5s ease-in-out infinite;
         }
       `}</style>
         </div >
