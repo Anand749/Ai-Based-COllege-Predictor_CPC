@@ -60,62 +60,69 @@ const Dashboard = () => {
             </AnimatePresence>
 
             {/* Hero Section - Full viewport height */}
-            <section className="relative overflow-hidden min-h-screen flex items-center">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative w-full">
-                    <div className="grid lg:grid-cols-2 gap-8 items-center">
+            <section className="relative overflow-hidden min-h-[90vh] lg:min-h-screen flex items-center">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative w-full">
+                    <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-center">
                         {/* Left Content */}
-                        <div className="space-y-6 z-10">
-                            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 leading-tight">
+                        <div className="space-y-4 sm:space-y-6 z-10 text-center lg:text-left">
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight">
                                 Find the Right<br />
                                 College <span className="text-[#f68014]">with Confidence</span>
                             </h1>
 
-                            <p className="text-lg text-gray-600 max-w-lg leading-relaxed">
+                            <p className="text-base sm:text-lg text-gray-600 max-w-lg leading-relaxed mx-auto lg:mx-0">
                                 Not sure which college you'll get? Enter your percentile and see your options instantly. We've analyzed 5 years of MHT-CET cutoff data so you don't have to.
                             </p>
 
                             {/* CTA Buttons */}
-                            <div className="flex flex-wrap gap-4 pt-2">
+                            <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-2 justify-center lg:justify-start">
                                 <Link to="/college-predictor">
-                                    <button className="px-7 py-3.5 bg-[#f68014] text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors">
-                                        Check My Colleges →
+                                    <button className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 bg-[#f68014] text-white font-semibold rounded-lg hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/25">
+                                        Predict College →
                                     </button>
                                 </Link>
                                 <Link to="/cutoff-predictor">
-                                    <button className="px-7 py-3.5 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-gray-400 transition-colors bg-white">
-                                        View Past Cutoffs
+                                    <button className="w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-gray-400 transition-colors bg-white">
+                                        Predict Cutoff for 2026 →
                                     </button>
                                 </Link>
                             </div>
 
                             {/* Simple Stats */}
-                            <div className="flex gap-10 pt-6 text-sm">
+                            <div className="flex justify-center lg:justify-start gap-6 sm:gap-8 lg:gap-10 pt-4 sm:pt-6 text-sm">
                                 <div>
-                                    <div className="text-2xl font-bold text-gray-900">19,500+</div>
-                                    <div className="text-gray-500">records</div>
+                                    <div className="text-xl sm:text-2xl font-bold text-gray-900">19,500+</div>
+                                    <div className="text-gray-500 text-xs sm:text-sm">records</div>
                                 </div>
                                 <div>
-                                    <div className="text-2xl font-bold text-gray-900">2021-25</div>
-                                    <div className="text-gray-500">data</div>
+                                    <div className="text-xl sm:text-2xl font-bold text-gray-900">2021-25</div>
+                                    <div className="text-gray-500 text-xs sm:text-sm">data</div>
                                 </div>
                                 <div>
-                                    <div className="text-2xl font-bold text-[#f68014]">Free</div>
-                                    <div className="text-gray-500">always</div>
+                                    <div className="text-xl sm:text-2xl font-bold text-[#f68014]">Free</div>
+                                    <div className="text-gray-500 text-xs sm:text-sm">always</div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Right - Illustration */}
-                        <div className="relative flex items-center justify-center lg:justify-end overflow-visible">
+                        <div className="relative hidden md:flex items-center justify-center lg:justify-end overflow-visible order-first lg:order-last">
+                            {/* Mobile/Tablet Image - Centered */}
                             <img
                                 src="/frontend.png"
                                 alt="Student exploring colleges"
-                                className="w-full max-w-none object-contain pointer-events-none select-none"
+                                className="lg:hidden w-full max-w-xs sm:max-w-sm object-contain pointer-events-none select-none drop-shadow-2xl"
+                            />
+                            {/* Desktop Image - Large with offset */}
+                            <img
+                                src="/frontend.png"
+                                alt="Student exploring colleges"
+                                className="hidden lg:block w-full max-w-none object-contain pointer-events-none select-none"
                                 style={{
                                     filter: 'drop-shadow(0 20px 40px rgba(246, 128, 20, 0.1))',
-                                    width: '1000px',
-                                    marginRight: '-300px',
-                                    marginTop: '80px'
+                                    width: '900px',
+                                    marginRight: '-200px',
+                                    marginTop: '40px'
                                 }}
                             />
                         </div>
@@ -126,81 +133,81 @@ const Dashboard = () => {
             </section>
 
             {/* Mentorship / Community Section */}
-            <section className="py-20 bg-gradient-to-r from-orange-600 to-orange-700 relative overflow-hidden">
+            <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-orange-600 to-orange-700 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-10"></div>
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-                        <div className="text-white space-y-4 max-w-2xl">
-                            <div className="inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm border border-white/20">
-                                <GraduationCap size={20} className="text-orange-200" />
-                                <span className="text-orange-100 font-medium text-sm">Mentorship Program</span>
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
+                        <div className="text-white space-y-3 sm:space-y-4 max-w-2xl text-center md:text-left">
+                            <div className="inline-flex items-center gap-2 bg-white/10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full backdrop-blur-sm border border-white/20">
+                                <GraduationCap size={18} className="text-orange-200" />
+                                <span className="text-orange-100 font-medium text-xs sm:text-sm">Mentorship Program</span>
                             </div>
-                            <h2 className="text-3xl md:text-4xl font-bold leading-tight">
-                                Confused about College Life? <br />
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
+                                Confused about College Life? <br className="hidden sm:block" />
                                 <span className="text-orange-200">Talk to Seniors Directly.</span>
                             </h2>
-                            <p className="text-orange-100 text-lg leading-relaxed">
+                            <p className="text-orange-100 text-sm sm:text-base lg:text-lg leading-relaxed">
                                 Get honest reviews, placement reality checks, and campus insights from students already studying in your dream colleges (COEP, VJTI, SPIT, PICT & more).
                             </p>
-                            <div className="pt-4 flex flex-wrap gap-4">
+                            <div className="pt-2 sm:pt-4 flex flex-wrap gap-4 justify-center md:justify-start">
                                 <a
                                     href="https://chat.whatsapp.com/HbLY6umdG2G5jKfeRIfbxf"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="px-8 py-4 bg-white text-orange-600 hover:bg-orange-50 font-bold rounded-xl transition-all shadow-lg transform hover:-translate-y-1"
+                                    className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-orange-600 hover:bg-orange-50 font-bold rounded-xl transition-all shadow-lg transform hover:-translate-y-1 text-sm sm:text-base"
                                 >
                                     Join Community For Free
                                 </a>
                             </div>
                         </div>
-                        <div className="relative">
+                        <div className="relative hidden sm:block">
                             <div className="absolute -inset-4 bg-white/20 blur-xl rounded-full"></div>
-                            <Users size={200} className="text-white/90 relative z-10" />
+                            <Users className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 text-white/90 relative z-10" />
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Tools Section */}
-            <section className="py-20 bg-white" id="tools">
+            <section className="py-12 sm:py-16 lg:py-20 bg-white" id="tools">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold text-gray-900 mb-2">Explore Our Tools</h2>
-                        <p className="text-gray-500">Everything you need for MHT-CET Mentorship</p>
+                    <div className="text-center mb-8 sm:mb-12">
+                        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Explore Our Tools</h2>
+                        <p className="text-gray-500 text-sm sm:text-base">Everything you need for MHT-CET Mentorship</p>
                     </div>
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
                         {/* College Predictor */}
-                        <Link to="/college-predictor" className="group block bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:border-orange-200 hover:-translate-y-1 transition-all duration-300">
-                            <div className="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center text-2xl mb-5 group-hover:bg-orange-200 transition-colors">
+                        <Link to="/college-predictor" className="group block bg-white rounded-2xl p-5 sm:p-6 lg:p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:border-orange-200 hover:-translate-y-1 transition-all duration-300">
+                            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-orange-100 rounded-xl flex items-center justify-center text-xl sm:text-2xl mb-4 sm:mb-5 group-hover:bg-orange-200 transition-colors">
                                 🎓
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-2">College Predictor</h3>
-                            <p className="text-gray-600 mb-4">Enter your percentile and see which colleges you're likely to get admission in.</p>
-                            <span className="text-[#f68014] font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">College Predictor</h3>
+                            <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base">Enter your percentile and see which colleges you're likely to get admission in.</p>
+                            <span className="text-[#f68014] font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all text-sm sm:text-base">
                                 Try Now <span className="text-lg">→</span>
                             </span>
                         </Link>
 
                         {/* Cutoff Analyzer */}
-                        <Link to="/cutoff-predictor" className="group block bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:border-orange-200 hover:-translate-y-1 transition-all duration-300">
-                            <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-2xl mb-5 group-hover:bg-blue-200 transition-colors">
+                        <Link to="/cutoff-predictor" className="group block bg-white rounded-2xl p-5 sm:p-6 lg:p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:border-orange-200 hover:-translate-y-1 transition-all duration-300">
+                            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-blue-100 rounded-xl flex items-center justify-center text-xl sm:text-2xl mb-4 sm:mb-5 group-hover:bg-blue-200 transition-colors">
                                 📊
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-2">Cutoff Analyzer</h3>
-                            <p className="text-gray-600 mb-4">View 5 years of cutoff trends and predict what cutoffs might be in 2026.</p>
-                            <span className="text-[#f68014] font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Cutoff Analyzer</h3>
+                            <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base">View 5 years of cutoff trends and predict what cutoffs might be in 2026.</p>
+                            <span className="text-[#f68014] font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all text-sm sm:text-base">
                                 Analyze <span className="text-lg">→</span>
                             </span>
                         </Link>
 
                         {/* College Comparison */}
-                        <Link to="/college-comparison" className="group block bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:border-orange-200 hover:-translate-y-1 transition-all duration-300 sm:col-span-2 lg:col-span-1">
-                            <div className="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center text-2xl mb-5 group-hover:bg-green-200 transition-colors">
+                        <Link to="/college-comparison" className="group block bg-white rounded-2xl p-5 sm:p-6 lg:p-8 shadow-sm border border-gray-100 hover:shadow-xl hover:border-orange-200 hover:-translate-y-1 transition-all duration-300 sm:col-span-2 lg:col-span-1">
+                            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-green-100 rounded-xl flex items-center justify-center text-xl sm:text-2xl mb-4 sm:mb-5 group-hover:bg-green-200 transition-colors">
                                 ⚖️
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-2">College Comparison</h3>
-                            <p className="text-gray-600 mb-4">Compare two colleges side by side with cutoffs, trends and more.</p>
-                            <span className="text-[#f68014] font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">College Comparison</h3>
+                            <p className="text-gray-600 mb-3 sm:mb-4 text-sm sm:text-base">Compare two colleges side by side with cutoffs, trends and more.</p>
+                            <span className="text-[#f68014] font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all text-sm sm:text-base">
                                 Compare <span className="text-lg">→</span>
                             </span>
                         </Link>
@@ -209,33 +216,33 @@ const Dashboard = () => {
             </section>
 
             {/* Footer */}
-            <footer className="bg-gray-900 text-gray-400 py-12">
+            <footer className="bg-gray-900 text-gray-400 py-8 sm:py-12">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid md:grid-cols-3 gap-8 mb-8">
-                        <div>
-                            <h3 className="text-white font-bold text-lg mb-4">College Pe Charcha</h3>
-                            <p className="text-sm leading-relaxed">Helping MHT-CET aspirants make informed decisions with data-driven insights.</p>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-6 sm:mb-8">
+                        <div className="col-span-2 md:col-span-1">
+                            <h3 className="text-white font-bold text-base sm:text-lg mb-3 sm:mb-4">College Pe Charcha</h3>
+                            <p className="text-xs sm:text-sm leading-relaxed">Helping MHT-CET aspirants make informed decisions with data-driven insights.</p>
                         </div>
                         <div>
-                            <h4 className="text-white font-semibold mb-4">Tools</h4>
-                            <ul className="space-y-2 text-sm">
+                            <h4 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Tools</h4>
+                            <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                                 <li><Link to="/college-predictor" className="hover:text-white transition">College Predictor</Link></li>
                                 <li><Link to="/cutoff-predictor" className="hover:text-white transition">Cutoff Analyzer</Link></li>
                                 <li><Link to="/college-comparison" className="hover:text-white transition">College Comparison</Link></li>
                             </ul>
                         </div>
                         <div>
-                            <h4 className="text-white font-semibold mb-4">Data Sources</h4>
-                            <ul className="space-y-2 text-sm">
+                            <h4 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Data Sources</h4>
+                            <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                                 <li>Cet Cell Maharashtra</li>
                                 <li>CAP Rounds 2021-2025</li>
                                 <li>Official Cutoff Records</li>
                             </ul>
                         </div>
                     </div>
-                    <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
-                        <p>© 2026 College Pe Charcha. Made for MHT-CET Aspirants.</p>
-                        <div className="flex gap-6">
+                    <div className="border-t border-gray-800 pt-6 sm:pt-8 flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4 text-xs sm:text-sm">
+                        <p className="text-center md:text-left">© 2026 College Pe Charcha. Made for MHT-CET Aspirants.</p>
+                        <div className="flex gap-4 sm:gap-6">
                             <Link to="/about" className="hover:text-white transition">About Us</Link>
                             <Link to="/contact" className="hover:text-white transition">Contact Us</Link>
                         </div>

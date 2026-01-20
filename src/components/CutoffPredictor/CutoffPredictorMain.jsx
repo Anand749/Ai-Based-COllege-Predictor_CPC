@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Papa from 'papaparse';
 import html2canvas from 'html2canvas';
-import { Download, Loader2 } from 'lucide-react';
+import { Download, Loader2, ArrowLeft } from 'lucide-react';
 import InputForm from './InputForm';
 import PredictionResults from './PredictionResults';
 import TrendGraph from './TrendGraph';
@@ -11,6 +11,7 @@ import CandidateCountChart from './CandidateCountChart';
 import IntakeChart from './IntakeChart';
 
 const CutoffPredictorMain = () => {
+    const navigate = useNavigate();
     const [predictionData, setPredictionData] = useState([]);
     const [historicalData, setHistoricalData] = useState([]);
     const [selectedFilters, setSelectedFilters] = useState({
@@ -176,10 +177,31 @@ const CutoffPredictorMain = () => {
 
     return (
         <div className="bg-orange-50 min-h-screen">
+            {/* Back Button - Mobile Visible */}
+            <div className="lg:hidden px-4 py-3 bg-white border-b border-orange-100">
+                <button
+                    onClick={() => navigate(-1)}
+                    className="inline-flex items-center gap-2 px-3 py-2 bg-orange-50 border border-orange-200 text-gray-700 hover:text-[#f68014] hover:border-[#f68014] rounded-xl font-medium text-sm transition-all"
+                >
+                    <ArrowLeft className="h-4 w-4" />
+                    <span>Back</span>
+                </button>
+            </div>
+
             {/* Responsive Layout */}
             <div className="flex flex-col lg:flex-row">
                 {/* Sidebar - Sticky on desktop */}
                 <aside className="w-full lg:w-80 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto bg-white border-b-4 lg:border-r-4 lg:border-b-0 border-orange-500 shadow-[10px_0_40px_rgba(249,115,22,0.1)] z-20 flex-shrink-0">
+                    {/* Desktop Back Button - Inside Sidebar */}
+                    <div className="hidden lg:block px-6 py-4 border-b border-gray-100">
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="inline-flex items-center gap-2 px-3 py-2 bg-orange-50 border border-orange-200 text-gray-700 hover:text-[#f68014] hover:border-[#f68014] rounded-xl font-medium text-sm transition-all"
+                        >
+                            <ArrowLeft className="h-4 w-4" />
+                            <span>Back</span>
+                        </button>
+                    </div>
                     <InputForm
                         predictionData={predictionData}
                         onPredict={handlePrediction}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -21,7 +22,8 @@ import {
     CheckCircle,
     Download,
     RotateCcw,
-    X
+    X,
+    ArrowLeft
 } from 'lucide-react';
 
 const casteFallbackOrder = {
@@ -76,6 +78,7 @@ const initialFilters = {
 };
 
 function CollegePredictorPage() {
+    const navigate = useNavigate();
     const [availableBranches, setAvailableBranches] = useState([]);
     const [capRound, setCapRound] = useState('01');
     const [examType, setExamType] = useState('MHT-CET');
@@ -523,8 +526,19 @@ function CollegePredictorPage() {
     };
 
     return (
-        <div className="transition-colors duration-300 bg-orange-50">
-            <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
+        <div className="transition-colors duration-300 bg-orange-50 min-h-screen">
+            <div className="max-w-7xl mx-auto px-4 py-4 sm:py-6">
+                {/* Back Button Header */}
+                <div className="mb-4 sm:mb-6">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-white border border-orange-200 text-gray-700 hover:text-[#f68014] hover:border-[#f68014] rounded-xl font-medium text-sm sm:text-base transition-all shadow-sm hover:shadow-md"
+                    >
+                        <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <span>Back</span>
+                    </button>
+                </div>
+
                 <div className="grid lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
                     <div className="lg:col-span-1">
                         <div className="rounded-2xl shadow-xl border sticky top-24 transition-colors duration-300 bg-white border-orange-100">

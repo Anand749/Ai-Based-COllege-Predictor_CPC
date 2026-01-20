@@ -1,12 +1,25 @@
 import React from "react";
-import { Mail, Instagram, MapPin, Send } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Mail, Instagram, MapPin, Send, ArrowLeft } from "lucide-react";
 
 const ContactPage = () => {
+    const navigate = useNavigate();
     return (
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 py-12">
+        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-blue-50 py-8 sm:py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Back Button */}
+                <div className="mb-6">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-white border border-orange-200 text-gray-700 hover:text-[#f68014] hover:border-[#f68014] rounded-xl font-medium text-sm sm:text-base transition-all shadow-sm hover:shadow-md"
+                    >
+                        <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <span>Back</span>
+                    </button>
+                </div>
+
                 {/* Header Section */}
-                <div className="text-center mb-12">
+                <div className="text-center mb-8 sm:mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                         Get in Touch
                     </h1>
