@@ -1,0 +1,132 @@
+{
+  "06276 - MKSSS's Cummins College of Engineering for Women, Karvenagar,Pune": {
+    "institute_code": "06276",
+    "status": "Un-Aided Autonomous Home University : Autonomous Institute",
+    "level": "State Level",
+    "district": "Pune",
+    "branches": [
+      {
+        "branch_info": "Computer Engineering",
+        "branch_code": "0627624550F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "2319\n(99.2734293)",
+            "LSCS": "18187\n(94.7692308)",
+            "LSTS": "54759\n(83.4924535)",
+            "LVJS": "16914\n(95.1229826)",
+            "LNT1S": "6090\n(98.2430292)",
+            "LNT2S": "6926\n(98.0091509)",
+            "LNT3S": "5271\n(98.4702940)",
+            "LOBCS": "3341\n(98.9992248)",
+            "LSEBCS": "2895\n(99.1248177)",
+            "PWDOPENS": "53468\n(83.9367933)",
+            "PWDOBCS": "82395\n(74.0094972)",
+            "DEFOPENS": "5089\n(98.5066333)",
+            "DEFSCS": "24192\n(92.9335890)",
+            "DEFOBCS": "7516\n(97.8540931)",
+            "DEFSEBCS": "9475\n(97.2853512)",
+            "PWDROBCS": "56600\n(82.8811189)",
+            "DEFRSEBCS": "6596\n(98.0895939)",
+            "ORPHAN": "20636\n(94.0000000)",
+            "EWS": "4299\n(98.7271912)"
+          }
+        ]
+      },
+      {
+        "branch_info": "Information Technology",
+        "branch_code": "0627624650F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "3659\n(98.9097204)",
+            "LSCS": "19253\n(94.4637991)",
+            "LSTS": "64737\n(80.3531469)",
+            "LVJS": "19220\n(94.4637991)",
+            "LNT1S": "7126\n(97.9603197)",
+            "LNT2S": "8402\n(97.5931731)",
+            "LNT3S": "5297\n(98.4626185)",
+            "LOBCS": "4152\n(98.7774295)",
+            "LSEBCS": "4425\n(98.7031550)",
+            "PWDOPENS": "76106\n(76.6755200)",
+            "PWDOBCS": "98410\n(68.2382408)",
+            "DEFOPENS": "6622\n(98.0894834)",
+            "DEFSCS": "46247\n(86.2326458)",
+            "DEFOBCS": "9039\n(97.4048265)",
+            "ORPHAN": "140783\n(48.5587427)",
+            "EWS": "5577\n(98.3713584)"
+          }
+        ]
+      },
+      {
+        "branch_info": "Electronics and Telecommunication Engg",
+        "branch_code": "0627637250F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "4997\n(98.5460836)",
+            "LSCS": "29511\n(91.3523651)",
+            "LSTS": "116090\n(60.4378874)",
+            "LVJS": "38918\n(88.5372351)",
+            "LNT1S": "13036\n(96.2611882)",
+            "LNT2S": "13011\n(96.3011479)",
+            "LNT3S": "8761\n(97.4991292)",
+            "LOBCS": "6457\n(98.1489199)",
+            "LSEBCS": "6807\n(98.0372119)",
+            "PWDOPENS": "165668\n(32.6791073)",
+            "PWDOBCS": "172012\n(28.9513426)",
+            "DEFOPENS": "9104\n(97.3993376)",
+            "DEFSCS": "66497\n(79.7185003)",
+            "DEFOBCS": "15884\n(95.4197144)",
+            "DEFSEBCS": "14883\n(95.7272828)",
+            "DEFROBCS": "14424\n(95.8450956)",
+            "ORPHAN": "178039\n(24.8659004)",
+            "EWS": "9268\n(97.3440033)"
+          }
+        ]
+      },
+      {
+        "branch_info": "Instrumentation and Control Engineering",
+        "branch_code": "0627646450F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "7433\n(97.8644152)",
+            "LSCS": "39942\n(88.1719651)",
+            "LSTS": "123508\n(57.4017459)",
+            "LVJS": "56645\n(82.8811189)",
+            "LNT1S": "13135\n(96.2382445)",
+            "LNT2S": "18205\n(94.7424061)",
+            "LNT3S": "24997\n(92.7190965)",
+            "LOBCS": "12258\n(96.4892052)",
+            "LSEBCS": "13502\n(96.1472705)",
+            "DEFOPENS": "19350\n(94.4196840)",
+            "DEFRSEBCS": "28337\n(91.7146701)",
+            "EWS": "18375\n(94.7364547)"
+          }
+        ]
+      },
+      {
+        "branch_info": "Mechanical Engineering",
+        "branch_code": "0627661250F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "7391\n(97.8815031)",
+            "LSCS": "31773\n(90.6674583)",
+            "LSTS": "134591\n(51.5716400)",
+            "LVJS": "51650\n(84.5176078)",
+            "LNT1S": "21915\n(93.6678322)",
+            "LNT2S": "18614\n(94.6273529)",
+            "LNT3S": "26176\n(92.3780367)",
+            "LOBCS": "10471\n(96.9871419)",
+            "LSEBCS": "10186\n(97.0940053)",
+            "DEFOPENS": "12540\n(96.4057811)",
+            "DEFROBCS": "22847\n(93.3751306)",
+            "EWS": "16638\n(95.2281725)"
+          }
+        ]
+      }
+    ]
+  }
+}

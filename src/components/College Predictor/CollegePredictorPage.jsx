@@ -68,6 +68,10 @@ const availableRegions = [
 const initialFilters = {
     percentile: "",
     rank: "",
+    minPercentile: "",
+    maxPercentile: "",
+    minRank: "",
+    maxRank: "",
     caste: "",
     branch: [],
     region: [],
@@ -83,6 +87,7 @@ function CollegePredictorPage() {
     const [capRound, setCapRound] = useState('01');
     const [examType, setExamType] = useState('MHT-CET');
     const [filterType, setFilterType] = useState('percentile');
+    const [filterMode, setFilterMode] = useState('single'); // 'single' or 'range'
 
     const casteCategories = [
         { value: "OPEN", label: "Open Category" },
@@ -140,7 +145,15 @@ function CollegePredictorPage() {
 
         if (name === "filterType") {
             setFilterType(value);
-            setFilters((prev) => ({ ...prev, percentile: "", rank: "" }));
+            setFilters((prev) => ({ ...prev, percentile: "", rank: "", minPercentile: "", maxPercentile: "", minRank: "", maxRank: "" }));
+            setPercentileError("");
+            setRankError("");
+            return;
+        }
+
+        if (name === "filterMode") {
+            setFilterMode(value);
+            setFilters((prev) => ({ ...prev, percentile: "", rank: "", minPercentile: "", maxPercentile: "", minRank: "", maxRank: "" }));
             setPercentileError("");
             setRankError("");
             return;
@@ -154,14 +167,14 @@ function CollegePredictorPage() {
             return;
         }
 
-        if (name === "percentile") {
+        if (name === "percentile" || name === "minPercentile" || name === "maxPercentile") {
             setPercentileError("");
             if (value && (parseFloat(value) > 100 || parseFloat(value) < 0)) {
                 setPercentileError("Percentile must be between 0 and 100.");
             }
         }
 
-        if (name === "rank") {
+        if (name === "rank" || name === "minRank" || name === "maxRank") {
             setRankError("");
             if (value && parseInt(value) <= 0) setRankError("Rank must be a positive number.");
         }
@@ -181,6 +194,7 @@ function CollegePredictorPage() {
     const resetFilters = () => {
         setFilters(initialFilters);
         setFilterType('percentile');
+        setFilterMode('single');
         setExamType('MHT-CET');
         setCapRound('01');
         setSelectedBranch('');
@@ -225,17 +239,32 @@ function CollegePredictorPage() {
         setNoResultsFound(false);
 
         setTimeout(() => {
-            const { percentile, rank, caste, branch, region, gender, universityType, isDefence, isPWD } = filters;
+            const { percentile, rank, minPercentile, maxPercentile, minRank, maxRank, caste, branch, region, gender, universityType, isDefence, isPWD } = filters;
 
-            if (filterType === 'percentile' && !percentile) {
-                alert("Please enter your percentile.");
-                setIsSearching(false);
-                return;
-            }
-            if (filterType === 'rank' && !rank) {
-                alert("Please enter your rank.");
-                setIsSearching(false);
-                return;
+            // Validation based on filter mode
+            if (filterMode === 'single') {
+                if (filterType === 'percentile' && !percentile) {
+                    alert("Please enter your percentile.");
+                    setIsSearching(false);
+                    return;
+                }
+                if (filterType === 'rank' && !rank) {
+                    alert("Please enter your rank.");
+                    setIsSearching(false);
+                    return;
+                }
+            } else {
+                // Range mode
+                if (filterType === 'percentile' && (!minPercentile || !maxPercentile)) {
+                    alert("Please enter both minimum and maximum percentile.");
+                    setIsSearching(false);
+                    return;
+                }
+                if (filterType === 'rank' && (!minRank || !maxRank)) {
+                    alert("Please enter both minimum and maximum rank.");
+                    setIsSearching(false);
+                    return;
+                }
             }
             if (examType === "MHT-CET" && !caste) {
                 alert("Please select a caste category.");
@@ -243,8 +272,13 @@ function CollegePredictorPage() {
                 return;
             }
 
+            // Parse values for filtering
             const percentileValue = parseFloat(percentile);
             const rankValue = parseInt(rank, 10);
+            const minPercentileValue = parseFloat(minPercentile);
+            const maxPercentileValue = parseFloat(maxPercentile);
+            const minRankValue = parseInt(minRank, 10);
+            const maxRankValue = parseInt(maxRank, 10);
 
             let data;
             if (examType === "MHT-CET") {
@@ -277,49 +311,109 @@ function CollegePredictorPage() {
 
                 results = collegesToSearch.map(([collegeName, collegeInfo]) => {
                     const eligibleBranches = collegeInfo.branches.map(currentBranch => {
-                        let bestAvailableSeatForBranch = { cutoffPercentile: -1, cutoffRank: Infinity, seatCode: null };
+                        // Collect ALL eligible seats for this branch
+                        let allEligibleSeats = [];
 
-                        const prefixFallback = isPWD ? ['PWD'] : isDefence ? ['DEF'] : gender === 'female' ? ['L', 'G'] : ['G'];
+                        // Build the list of seat codes to check based on user preferences
+                        const genderPrefixes = isPWD ? ['PWD', 'PWDR'] : isDefence ? ['DEF', 'DEFR'] : gender === 'female' ? ['L', 'G'] : ['G', 'L'];
+
+                        // User's primary category (e.g., SC, ST, OBC, etc.)
+                        const primaryCategory = caste;
+                        // Full fallback order including OPEN
                         const casteFallback = casteFallbackOrder[caste] || [caste];
-                        // Try all suffixes in priority order: S (State Level) > O (Outside) > H (Home)
-                        const suffixPriority = ['S', 'O', 'H'];
 
-                        for (const prefix of prefixFallback) {
-                            for (const fallbackCaste of casteFallback) {
-                                for (const suffix of suffixPriority) {
-                                    const seatCode = `${prefix}${fallbackCaste}${suffix}`;
+                        // All possible suffixes
+                        const suffixes = ['S', 'O', 'H', ''];  // '' for codes without suffix
 
-                                    for (const row of currentBranch.table_data) {
+                        // Helper function to check eligibility
+                        const checkEligibility = (cutoffPercentile, cutoffRank) => {
+                            if (filterMode === 'single') {
+                                if (filterType === 'percentile') {
+                                    return !isNaN(cutoffPercentile) && percentileValue >= cutoffPercentile;
+                                } else {
+                                    return !isNaN(cutoffRank) && rankValue <= cutoffRank;
+                                }
+                            } else {
+                                if (filterType === 'percentile' && !isNaN(cutoffPercentile)) {
+                                    return cutoffPercentile >= minPercentileValue && cutoffPercentile <= maxPercentileValue;
+                                } else if (filterType === 'rank' && !isNaN(cutoffRank)) {
+                                    return cutoffRank >= minRankValue && cutoffRank <= maxRankValue;
+                                }
+                            }
+                            return false;
+                        };
+
+                        // Helper to parse seat data
+                        const parseSeatData = (seatValue) => {
+                            if (!seatValue || seatValue === "") return null;
+                            const parts = seatValue.split("\n");
+                            const cutoffRank = parseInt(parts[0], 10);
+                            const cutoffPercentile = parseFloat(parts[1]?.replace(/[()]/g, ""));
+                            if (isNaN(cutoffRank) || isNaN(cutoffPercentile)) return null;
+                            return { cutoffRank, cutoffPercentile };
+                        };
+
+                        // Check all rows in table_data for this branch
+                        for (const row of currentBranch.table_data) {
+                            // Try all combinations of prefix + caste + suffix
+                            for (const prefix of genderPrefixes) {
+                                for (const casteCode of casteFallback) {
+                                    for (const suffix of suffixes) {
+                                        const seatCode = suffix ? `${prefix}${casteCode}${suffix}` : `${prefix}${casteCode}`;
+
                                         if (row[seatCode]) {
-                                            const parts = row[seatCode].split("\n");
-                                            const cutoffRank = parseInt(parts[0], 10);
-                                            const cutoffPercentile = parseFloat(parts[1]?.replace(/[()]/g, ""));
-
-                                            const isEligible = (filterType === 'percentile' && !isNaN(cutoffPercentile) && percentileValue >= cutoffPercentile) ||
-                                                (filterType === 'rank' && !isNaN(cutoffRank) && rankValue <= cutoffRank);
-
-                                            if (isEligible && cutoffPercentile > bestAvailableSeatForBranch.cutoffPercentile) {
-                                                bestAvailableSeatForBranch = {
-                                                    cutoffPercentile: cutoffPercentile,
-                                                    cutoffRank: cutoffRank,
-                                                    seatCode: seatCode,
-                                                };
+                                            const parsed = parseSeatData(row[seatCode]);
+                                            if (parsed && checkEligibility(parsed.cutoffPercentile, parsed.cutoffRank)) {
+                                                const isPrimaryCat = casteCode === primaryCategory;
+                                                allEligibleSeats.push({
+                                                    seatCode,
+                                                    cutoffPercentile: parsed.cutoffPercentile,
+                                                    cutoffRank: parsed.cutoffRank,
+                                                    isPrimaryCategory: isPrimaryCat,
+                                                    priority: isPrimaryCat ? 0 : 1, // Lower is better
+                                                });
                                             }
                                         }
                                     }
                                 }
                             }
+
+                            // Also check special category seats like EWS (for EWS category users)
+                            if (caste === "EWS" && row["EWS"]) {
+                                const parsed = parseSeatData(row["EWS"]);
+                                if (parsed && checkEligibility(parsed.cutoffPercentile, parsed.cutoffRank)) {
+                                    allEligibleSeats.push({
+                                        seatCode: "EWS",
+                                        cutoffPercentile: parsed.cutoffPercentile,
+                                        cutoffRank: parsed.cutoffRank,
+                                        isPrimaryCategory: true,
+                                        priority: 0,
+                                    });
+                                }
+                            }
                         }
 
-                        if (bestAvailableSeatForBranch.seatCode) {
-                            return {
-                                branch_info: currentBranch.branch_info,
-                                bestCutoff: bestAvailableSeatForBranch.cutoffPercentile,
-                                bestCutoffRank: bestAvailableSeatForBranch.cutoffRank,
-                                matchedSeatCode: bestAvailableSeatForBranch.seatCode,
-                            };
+                        // If no eligible seats found, return null
+                        if (allEligibleSeats.length === 0) {
+                            return null;
                         }
-                        return null;
+
+                        // Sort seats: primary category first, then by higher cutoff percentile
+                        allEligibleSeats.sort((a, b) => {
+                            if (a.priority !== b.priority) return a.priority - b.priority;
+                            return b.cutoffPercentile - a.cutoffPercentile;
+                        });
+
+                        // Return the best seat for this branch
+                        const bestSeat = allEligibleSeats[0];
+                        return {
+                            branch_info: currentBranch.branch_info,
+                            bestCutoff: bestSeat.cutoffPercentile,
+                            bestCutoffRank: bestSeat.cutoffRank,
+                            matchedSeatCode: bestSeat.seatCode,
+                            isPrimaryCategory: bestSeat.isPrimaryCategory,
+                            allSeatsCount: allEligibleSeats.length, // For debugging
+                        };
                     }).filter(Boolean);
 
                     const finalEligibleBranches = branch.length > 0
@@ -327,14 +421,27 @@ function CollegePredictorPage() {
                         : eligibleBranches;
 
                     if (finalEligibleBranches.length > 0) {
+                        // Sort branches: primary category matches first, then by cutoff percentile
+                        const sortedBranches = finalEligibleBranches.sort((a, b) => {
+                            // First priority: Primary category matches come first
+                            if (a.isPrimaryCategory && !b.isPrimaryCategory) return -1;
+                            if (!a.isPrimaryCategory && b.isPrimaryCategory) return 1;
+                            // Second priority: Higher cutoff percentile first
+                            return b.bestCutoff - a.bestCutoff;
+                        });
+
+                        // Check if this college has any primary category matches
+                        const hasPrimaryCategoryMatch = sortedBranches.some(b => b.isPrimaryCategory);
+
                         return {
                             collegeName,
                             status: collegeInfo.status,
                             level: collegeInfo.level,
                             district: collegeInfo.district,
-                            branches: finalEligibleBranches.sort((a, b) => b.bestCutoff - a.bestCutoff),
+                            branches: sortedBranches,
                             closingPercentile: Math.max(...finalEligibleBranches.map(b => b.bestCutoff)),
                             closingRank: Math.min(...finalEligibleBranches.map(b => b.bestCutoffRank)),
+                            hasPrimaryCategoryMatch: hasPrimaryCategoryMatch, // For overall sorting
                         };
                     }
                     return null;
@@ -350,8 +457,15 @@ function CollegePredictorPage() {
                         const meritData = course["All India Merit"].split(" ");
                         const cutoffRank = parseInt(meritData[0], 10);
                         const cutoffPercentile = parseFloat(meritData[1]?.replace(/[()]/g, ""));
-                        if (filterType === 'percentile') return !isNaN(cutoffPercentile) && percentileValue >= cutoffPercentile;
-                        else return !isNaN(cutoffRank) && rankValue <= cutoffRank;
+
+                        if (filterMode === 'single') {
+                            if (filterType === 'percentile') return !isNaN(cutoffPercentile) && percentileValue >= cutoffPercentile;
+                            else return !isNaN(cutoffRank) && rankValue <= cutoffRank;
+                        } else {
+                            // Range mode
+                            if (filterType === 'percentile') return !isNaN(cutoffPercentile) && cutoffPercentile >= minPercentileValue && cutoffPercentile <= maxPercentileValue;
+                            else return !isNaN(cutoffRank) && cutoffRank >= minRankValue && cutoffRank <= maxRankValue;
+                        }
                     });
                 }).map((college) => {
                     const matchingCourses = college.Courses.filter(course => {
@@ -360,8 +474,14 @@ function CollegePredictorPage() {
                         const meritData = course["All India Merit"].split(" ");
                         const cutoffRank = parseInt(meritData[0], 10);
                         const cutoffPercentile = parseFloat(meritData[1]?.replace(/[()]/g, ""));
-                        if (filterType === 'percentile') return !isNaN(cutoffPercentile) && percentileValue >= cutoffPercentile;
-                        else return !isNaN(cutoffRank) && rankValue <= cutoffRank;
+
+                        if (filterMode === 'single') {
+                            if (filterType === 'percentile') return !isNaN(cutoffPercentile) && percentileValue >= cutoffPercentile;
+                            else return !isNaN(cutoffRank) && rankValue <= cutoffRank;
+                        } else {
+                            if (filterType === 'percentile') return !isNaN(cutoffPercentile) && cutoffPercentile >= minPercentileValue && cutoffPercentile <= maxPercentileValue;
+                            else return !isNaN(cutoffRank) && cutoffRank >= minRankValue && cutoffRank <= maxRankValue;
+                        }
                     });
                     const getRank = c => parseInt(c["All India Merit"].split(" ")[0], 10);
                     const getPercentile = c => parseFloat(c["All India Merit"].split(" ")[1]?.replace(/[()]/g, ""));
@@ -386,11 +506,22 @@ function CollegePredictorPage() {
                 });
             }
 
-            if (filterType === 'percentile') {
-                results.sort((a, b) => b.closingPercentile - a.closingPercentile);
-            } else {
-                results.sort((a, b) => a.closingRank - b.closingRank);
-            }
+            // Sort results: 
+            // 1. First priority: Colleges with primary category matches come first
+            // 2. Second priority: By percentile (desc) or rank (asc)
+            results.sort((a, b) => {
+                // For MHT-CET results, prioritize colleges with primary category matches
+                if (examType === "MHT-CET") {
+                    if (a.hasPrimaryCategoryMatch && !b.hasPrimaryCategoryMatch) return -1;
+                    if (!a.hasPrimaryCategoryMatch && b.hasPrimaryCategoryMatch) return 1;
+                }
+                // Then sort by percentile or rank
+                if (filterType === 'percentile') {
+                    return b.closingPercentile - a.closingPercentile;
+                } else {
+                    return a.closingRank - b.closingRank;
+                }
+            });
 
             setFilteredColleges(results.slice(0, 30));
 
@@ -422,14 +553,22 @@ function CollegePredictorPage() {
                 district: college.district,
                 status: college.status,
                 level: college.level,
+                isPrimaryCategory: b.isPrimaryCategory, // Include category priority
             }));
         });
 
-        if (filterType === 'percentile') {
-            filteredPreferences.sort((a, b) => b.bestCutoff - a.bestCutoff);
-        } else {
-            filteredPreferences.sort((a, b) => a.bestCutoffRank - b.bestCutoffRank);
-        }
+        // Sort: Primary category matches first, then by percentile/rank
+        filteredPreferences.sort((a, b) => {
+            // First priority: Primary category matches come first
+            if (a.isPrimaryCategory && !b.isPrimaryCategory) return -1;
+            if (!a.isPrimaryCategory && b.isPrimaryCategory) return 1;
+            // Then sort by percentile or rank
+            if (filterType === 'percentile') {
+                return b.bestCutoff - a.bestCutoff;
+            } else {
+                return a.bestCutoffRank - b.bestCutoffRank;
+            }
+        });
 
         try {
             const doc = new jsPDF();
@@ -494,7 +633,7 @@ function CollegePredictorPage() {
                     item.matchedSeatCode,
                     filterType === "rank"
                         ? (item.bestCutoffRank !== Infinity ? item.bestCutoffRank.toString() : 'N/A')
-                        : (item.bestCutoff ? item.bestCutoff.toFixed(2) : 'N/A')
+                        : (item.bestCutoff ? item.bestCutoff.toString() : 'N/A')
                 ];
                 tableRows.push(rowData);
             });
@@ -572,11 +711,11 @@ function CollegePredictorPage() {
                                 <div className="space-y-2 sm:space-y-3">
                                     <label className="block text-sm font-medium transition-colors duration-300 text-gray-700">CAP Round</label>
                                     <div className="grid grid-cols-4 gap-2">
-                                        {["'1", "'2", "'3", "'4"].map((round) => (
+                                        {["01", "02", "03", "04"].map((round) => (
                                             <label key={round} className="relative">
                                                 <input type="radio" name="capRound" value={round} checked={capRound === round} onChange={() => setCapRound(round)} className="peer sr-only" />
                                                 <div className="px-1 sm:px-2 py-1.5 sm:py-2 border rounded-lg text-center cursor-pointer transition-all peer-checked:bg-[#f68014] peer-checked:text-white peer-checked:border-[#f68014] bg-gray-100 border-orange-200 hover:border-orange-300">
-                                                    <span className="text-xs sm:text-sm font-medium">CAP{round}</span>
+                                                    <span className="text-xs sm:text-sm font-medium">CAP{parseInt(round)}</span>
                                                 </div>
                                             </label>
                                         ))}
@@ -597,16 +736,57 @@ function CollegePredictorPage() {
                                     </div>
                                 </div>
 
-                                {filterType === 'percentile' ? (
+                                {/* Filter Mode: Single or Range */}
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-medium transition-colors duration-300 text-gray-700">Input Mode</label>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {[{ v: 'single', l: 'Single Value' }, { v: 'range', l: 'Range' }].map((mode) => (
+                                            <label key={mode.v} className="relative">
+                                                <input type="radio" name="filterMode" value={mode.v} checked={filterMode === mode.v} onChange={handleFilterChange} className="peer sr-only" />
+                                                <div className="px-2 sm:px-3 py-1.5 sm:py-2 border rounded-lg text-center cursor-pointer transition-all peer-checked:bg-[#f68014] peer-checked:text-white peer-checked:border-[#f68014] bg-gray-100 border-orange-200 hover:border-orange-300">
+                                                    <span className="text-xs sm:text-sm font-medium">{mode.l}</span>
+                                                </div>
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Single Mode Inputs */}
+                                {filterMode === 'single' && filterType === 'percentile' && (
                                     <div className="space-y-2">
                                         <label className="text-sm font-medium flex items-center space-x-2 transition-colors duration-300 text-gray-700"><Award className="h-4 w-4 text-[#f68014]" /><span>Your Percentile</span></label>
-                                        <input type="number" name="percentile" value={filters.percentile} onChange={handleFilterChange} className={`w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-[#f68014] transition-colors duration-300 ${percentileError ? "border-red-300" : "border-orange-200 bg-gray-50"}`} placeholder="e.g., 95.5" />
+                                        <input type="number" name="percentile" value={filters.percentile} onChange={handleFilterChange} className={`w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-[#f68014] transition-colors duration-300 ${percentileError ? "border-red-300" : "border-orange-200 bg-gray-50"}`} placeholder="e.g., 95.5" step="any" />
                                         {percentileError && <div className="text-xs text-red-600 mt-1">{percentileError}</div>}
                                     </div>
-                                ) : (
+                                )}
+                                {filterMode === 'single' && filterType === 'rank' && (
                                     <div className="space-y-2">
                                         <label className="text-sm font-medium flex items-center space-x-2 transition-colors duration-300 text-gray-700"><Award className="h-4 w-4 text-[#f68014]" /><span>Your Rank</span></label>
                                         <input type="number" name="rank" value={filters.rank} onChange={handleFilterChange} className={`w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-[#f68014] transition-colors duration-300 ${rankError ? "border-red-300" : "border-orange-200 bg-gray-50"}`} placeholder="e.g., 5000" />
+                                        {rankError && <div className="text-xs text-red-600 mt-1">{rankError}</div>}
+                                    </div>
+                                )}
+
+                                {/* Range Mode Inputs */}
+                                {filterMode === 'range' && filterType === 'percentile' && (
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium flex items-center space-x-2 transition-colors duration-300 text-gray-700"><Award className="h-4 w-4 text-[#f68014]" /><span>Percentile Range</span></label>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <input type="number" name="minPercentile" value={filters.minPercentile} onChange={handleFilterChange} className={`w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-[#f68014] transition-colors duration-300 ${percentileError ? "border-red-300" : "border-orange-200 bg-gray-50"}`} placeholder="Min (e.g., 85)" step="any" />
+                                            <input type="number" name="maxPercentile" value={filters.maxPercentile} onChange={handleFilterChange} className={`w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-[#f68014] transition-colors duration-300 ${percentileError ? "border-red-300" : "border-orange-200 bg-gray-50"}`} placeholder="Max (e.g., 95)" step="any" />
+                                        </div>
+                                        <p className="text-xs text-gray-500">Show colleges with cutoffs between min and max percentile</p>
+                                        {percentileError && <div className="text-xs text-red-600 mt-1">{percentileError}</div>}
+                                    </div>
+                                )}
+                                {filterMode === 'range' && filterType === 'rank' && (
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium flex items-center space-x-2 transition-colors duration-300 text-gray-700"><Award className="h-4 w-4 text-[#f68014]" /><span>Rank Range</span></label>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <input type="number" name="minRank" value={filters.minRank} onChange={handleFilterChange} className={`w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-[#f68014] transition-colors duration-300 ${rankError ? "border-red-300" : "border-orange-200 bg-gray-50"}`} placeholder="Min (e.g., 1000)" />
+                                            <input type="number" name="maxRank" value={filters.maxRank} onChange={handleFilterChange} className={`w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-[#f68014] transition-colors duration-300 ${rankError ? "border-red-300" : "border-orange-200 bg-gray-50"}`} placeholder="Max (e.g., 10000)" />
+                                        </div>
+                                        <p className="text-xs text-gray-500">Show colleges with cutoffs between min and max rank</p>
                                         {rankError && <div className="text-xs text-red-600 mt-1">{rankError}</div>}
                                     </div>
                                 )}
@@ -752,7 +932,7 @@ function CollegePredictorPage() {
                                                             <div key={i} className="rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm hover:bg-orange-50 transition-colors duration-200 bg-gray-50 text-gray-700">
                                                                 <div className="flex justify-between items-center">
                                                                     <span className="flex items-center space-x-2"><div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#f68014] rounded-full"></div><span className="font-medium">{branch.branch_info}</span></span>
-                                                                    <span className="font-mono text-right transition-colors duration-300 text-gray-500">{filterType === 'rank' ? `Rank: ${branch.bestCutoffRank}` : `Cutoff: ${branch.bestCutoff.toFixed(2)}%`}</span>
+                                                                    <span className="font-mono text-right transition-colors duration-300 text-gray-500">{filterType === 'rank' ? `Rank: ${branch.bestCutoffRank}` : `Cutoff: ${branch.bestCutoff}%`}</span>
                                                                 </div>
                                                                 <div className="pl-4 mt-1"><span className="text-orange-700 font-semibold" style={{ fontSize: '11px' }}>Seat: {branch.matchedSeatCode}</span></div>
                                                             </div>
@@ -815,3 +995,5 @@ function CollegePredictorPage() {
 }
 
 export default CollegePredictorPage;
+
+

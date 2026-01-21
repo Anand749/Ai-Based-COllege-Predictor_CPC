@@ -131677,5 +131677,161 @@
         ]
       }
     ]
+  },
+  "MKSSS's Cummins College of Engineering for Women, Karvenagar,Pune": {
+    "institute_code": "06276",
+    "status": "Un-Aided Autonomous Home University : Autonomous Institute",
+    "level": "State Level",
+    "district": "Pune",
+    "branches": [
+      {
+        "branch_info": "Computer Engineering",
+        "branch_code": "0627624550F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "2415\n(99.2485911)",
+            "LNT3S": "5297\n(98.4626185)",
+            "LOBCS": "3228\n(99.0285279)",
+            "LSEBCS": "2927\n(99.1082756)",
+            "PWDSCS": "",
+            "PWDSEBCS": "",
+            "TFWS": "3113\n(99.0517692)",
+            "EWS": "4689\n(98.6211176)"
+          },
+          {
+            "null": "I-Non\nPWD",
+            "LOPENS": "",
+            "LNT3S": "",
+            "LOBCS": "",
+            "LSEBCS": "",
+            "PWDSCS": "13095\n(96.2402125)",
+            "PWDSEBCS": "2953\n(99.1075475)",
+            "TFWS": "",
+            "EWS": ""
+          }
+        ]
+      },
+      {
+        "branch_info": "Information Technology",
+        "branch_code": "0627624650F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "3694\n(98.8958551)",
+            "LSTS": "72900\n(77.2287062)",
+            "LNT3S": "5795\n(98.3155966)",
+            "LSEBCS": "4267\n(98.7329183)",
+            "PWDSCS": "",
+            "TFWS": "3635\n(98.9197811)",
+            "EWS": "6148\n(98.2046366)"
+          },
+          {
+            "null": "I-Non\nPWD",
+            "LOPENS": "",
+            "LSTS": "",
+            "LNT3S": "",
+            "LSEBCS": "",
+            "PWDSCS": "19343\n(94.4196840)",
+            "TFWS": "",
+            "EWS": ""
+          }
+        ]
+      },
+      {
+        "branch_info": "Electronics and Telecommunication Engg",
+        "branch_code": "0627637250F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "4848\n(98.5686454)",
+            "LSCS": "20751\n(93.9883008)",
+            "LNT2S": "8746\n(97.4991292)",
+            "LNT3S": "13275\n(96.1861934)",
+            "LOBCS": "5694\n(98.3468729)",
+            "LSEBCS": "7431\n(97.8644152)",
+            "PWDSCS": "",
+            "PWDSEBCS": "",
+            "TFWS": "6089\n(98.2430292)",
+            "DEFROBCS": "14784\n(95.7536628)",
+            "ORPHAN": "",
+            "EWS": "9364\n(97.3318625)"
+          },
+          {
+            "null": "I-Non\nPWD",
+            "LOPENS": "",
+            "LSCS": "",
+            "LNT2S": "",
+            "LNT3S": "",
+            "LOBCS": "",
+            "LSEBCS": "",
+            "PWDSCS": "23527\n(93.1604527)",
+            "PWDSEBCS": "7465\n(97.8579520)",
+            "TFWS": "",
+            "DEFROBCS": "",
+            "ORPHAN": "",
+            "EWS": ""
+          },
+          {
+            "null": "VII",
+            "LOPENS": "",
+            "LSCS": "",
+            "LNT2S": "",
+            "LNT3S": "",
+            "LOBCS": "",
+            "LSEBCS": "",
+            "PWDSCS": "",
+            "PWDSEBCS": "",
+            "TFWS": "",
+            "DEFROBCS": "",
+            "ORPHAN": "5007\n(98.5460836)",
+            "EWS": ""
+          }
+        ]
+      },
+      {
+        "branch_info": "Instrumentation and Control Engineering",
+        "branch_code": "0627646450F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "7905\n(97.7290277)",
+            "LSCS": "46175\n(86.2351996)",
+            "LSTS": "159253\n(37.6293706)",
+            "LOBCS": "11485\n(96.6904701)",
+            "LSEBCS": "9701\n(97.2269547)",
+            "PWDOPENS": "201843\n(2.6606735)",
+            "TFWS": "12258\n(96.4892052)",
+            "DEFRSEBCS": "69588\n(78.6137148)"
+          }
+        ]
+      },
+      {
+        "branch_info": "Mechanical Engineering",
+        "branch_code": "0627661250F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "5392\n(98.4161479)",
+            "LSCS": "33684\n(90.0917161)",
+            "LSTS": "61343\n(81.3270637)",
+            "LNT3S": "21392\n(93.8434722)",
+            "LOBCS": "8165\n(97.6563864)",
+            "PWDOPENS": "",
+            "EWS": "10617\n(96.9568270)"
+          },
+          {
+            "null": "I-Non\nPWD",
+            "LOPENS": "",
+            "LSCS": "",
+            "LSTS": "",
+            "LNT3S": "",
+            "LOBCS": "",
+            "PWDOPENS": "7356\n(97.8834131)",
+            "EWS": ""
+          }
+        ]
+      }
+    ]
   }
 }

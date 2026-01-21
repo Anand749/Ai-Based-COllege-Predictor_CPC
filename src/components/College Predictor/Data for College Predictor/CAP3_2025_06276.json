@@ -1,0 +1,86 @@
+{
+  "06276 - MKSSS's Cummins College of Engineering for Women, Karvenagar,Pune": {
+    "institute_code": "06276",
+    "status": "Un-Aided Autonomous Home University : Autonomous Institute",
+    "level": "State Level",
+    "district": "Pune",
+    "branches": [
+      {
+        "branch_info": "Computer Engineering",
+        "branch_code": "0627624550F",
+        "table_data": [
+          {
+            "null": "I",
+            "LSTS": "50166\n(84.9728618)",
+            "EWS": "4830\n(98.5798858)"
+          }
+        ]
+      },
+      {
+        "branch_info": "Information Technology",
+        "branch_code": "0627624650F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "3048\n(99.0755752)",
+            "EWS": "6186\n(98.1993682)"
+          }
+        ]
+      },
+      {
+        "branch_info": "Electronics and Telecommunication Engg",
+        "branch_code": "0627637250F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "4039\n(98.7858301)",
+            "LSTS": "83476\n(73.6328536)",
+            "LOBCS": "6070\n(98.2439959)",
+            "PWDSEBCS": "",
+            "TFWS": "7135\n(97.9506368)"
+          },
+          {
+            "null": "I-Non\nPWD",
+            "LOPENS": "",
+            "LSTS": "",
+            "LOBCS": "",
+            "PWDSEBCS": "7663\n(97.7946794)",
+            "TFWS": ""
+          }
+        ]
+      },
+      {
+        "branch_info": "Instrumentation and Control Engineering",
+        "branch_code": "0627646450F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "4112\n(98.7820288)",
+            "LNT1S": "30184\n(91.0820780)",
+            "EWS": "13666\n(96.0671999)"
+          }
+        ]
+      },
+      {
+        "branch_info": "Mechanical Engineering",
+        "branch_code": "0627661250F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "5225\n(98.4798292)",
+            "LOBCS": "10579\n(96.9659622)",
+            "PWDOPENS": "",
+            "TFWS": "11158\n(96.8073860)"
+          },
+          {
+            "null": "I-Non\nPWD",
+            "LOPENS": "",
+            "LOBCS": "",
+            "PWDOPENS": "7388\n(97.8815031)",
+            "TFWS": ""
+          }
+        ]
+      }
+    ]
+  }
+}

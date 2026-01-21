@@ -1,0 +1,66 @@
+{
+  "06276 - MKSSS's Cummins College of Engineering for Women, Karvenagar,Pune": {
+    "institute_code": "06276",
+    "status": "Un-Aided Autonomous Home University : Autonomous Institute",
+    "level": "State Level",
+    "district": "Pune",
+    "branches": [
+      {
+        "branch_info": "Computer Engineering",
+        "branch_code": "0627624550F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "1702\n(99.4512746)",
+            "LSEBCS": "3500\n(98.9469989)"
+          }
+        ]
+      },
+      {
+        "branch_info": "Information Technology",
+        "branch_code": "0627624650F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "3786\n(98.8723659)",
+            "LSCS": "21378\n(93.8434722)",
+            "LOBCS": "3798\n(98.8723659)"
+          }
+        ]
+      },
+      {
+        "branch_info": "Electronics and Telecommunication Engg",
+        "branch_code": "0627637250F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "4542\n(98.6608392)",
+            "LSTS": "120790\n(58.4401523)",
+            "LOBCS": "6664\n(98.0856128)"
+          }
+        ]
+      },
+      {
+        "branch_info": "Instrumentation and Control Engineering",
+        "branch_code": "0627646450F",
+        "table_data": [
+          {
+            "null": "I",
+            "LOPENS": "5617\n(98.3671329)",
+            "LOBCS": "8136\n(97.6601593)"
+          }
+        ]
+      },
+      {
+        "branch_info": "Mechanical Engineering",
+        "branch_code": "0627661250F",
+        "table_data": [
+          {
+            "null": "I",
+            "TFWS": "13233\n(96.2208795)"
+          }
+        ]
+      }
+    ]
+  }
+}
