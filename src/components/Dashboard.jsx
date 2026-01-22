@@ -1,10 +1,16 @@
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { X, MessageCircle, Users, GraduationCap } from 'lucide-react';
+import { X, MessageCircle, Users, GraduationCap, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Spline from '@splinetool/react-spline';
 
 const Dashboard = () => {
     const [showPopup, setShowPopup] = useState(false);
+
+    // Typing animation for greeting
+    const fullText = "I am College Mitra, your AI-based college predictor. I will help you with selecting colleges, comparing them, and predicting cutoffs for next year!";
+    const [typedText, setTypedText] = useState('');
+    const [isTyping, setIsTyping] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -12,6 +18,26 @@ const Dashboard = () => {
         }, 2000);
         return () => clearTimeout(timer);
     }, []);
+
+    // Typing effect
+    useEffect(() => {
+        const startDelay = setTimeout(() => {
+            setIsTyping(true);
+        }, 2500);
+
+        return () => clearTimeout(startDelay);
+    }, []);
+
+    useEffect(() => {
+        if (!isTyping) return;
+
+        if (typedText.length < fullText.length) {
+            const timeout = setTimeout(() => {
+                setTypedText(fullText.slice(0, typedText.length + 1));
+            }, 50);
+            return () => clearTimeout(timeout);
+        }
+    }, [typedText, isTyping, fullText]);
 
     return (
         <div className="min-h-screen bg-orange-50">
@@ -105,26 +131,132 @@ const Dashboard = () => {
                             </div>
                         </div>
 
-                        {/* Right - Illustration */}
+                        {/* Right - 3D AI Assistant */}
                         <div className="relative hidden md:flex items-center justify-center lg:justify-end overflow-visible order-first lg:order-last">
-                            {/* Mobile/Tablet Image - Centered */}
-                            <img
-                                src="/frontend.png"
-                                alt="Student exploring colleges"
-                                className="lg:hidden w-full max-w-xs sm:max-w-sm object-contain pointer-events-none select-none drop-shadow-2xl"
-                            />
-                            {/* Desktop Image - Large with offset */}
-                            <img
-                                src="/frontend.png"
-                                alt="Student exploring colleges"
-                                className="hidden lg:block w-full max-w-none object-contain pointer-events-none select-none"
-                                style={{
-                                    filter: 'drop-shadow(0 20px 40px rgba(246, 128, 20, 0.1))',
-                                    width: '900px',
-                                    marginRight: '-200px',
-                                    marginTop: '40px'
-                                }}
-                            />
+                            <div className="relative w-full max-w-lg lg:max-w-2xl">
+                                {/* 3D Spline Robot */}
+                                <div className="relative h-[400px] lg:h-[600px] w-full">
+                                    <Spline
+                                        scene="https://prod.spline.design/GnHmmYaecwIV0ptE/scene.splinecode"
+                                        className="w-full h-full"
+                                    />
+                                </div>
+
+                                {/* College Mitra Greeting Bubble - Modern Interactive */}
+                                <motion.div
+                                    initial={{ opacity: 0, x: 50, y: -20 }}
+                                    animate={{
+                                        opacity: 1,
+                                        x: 0,
+                                        y: 0,
+                                        y: [0, -10, 0]
+                                    }}
+                                    transition={{
+                                        opacity: { delay: 1, duration: 0.6 },
+                                        x: { delay: 1, duration: 0.6, ease: "easeOut" },
+                                        y: { delay: 2, duration: 3, repeat: Infinity, ease: "easeInOut" }
+                                    }}
+                                    className="absolute -top-8 -right-20 lg:-right-32 xl:-right-44 max-w-sm z-20"
+                                >
+                                    <motion.div
+                                        whileHover={{ scale: 1.02, y: -5 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="bg-gradient-to-br from-white/90 via-white/85 to-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/60 px-6 py-6 relative group cursor-pointer"
+                                    >
+                                        {/* Animated glow effect */}
+                                        <motion.div
+                                            animate={{
+                                                opacity: [0.3, 0.6, 0.3],
+                                                scale: [1, 1.05, 1]
+                                            }}
+                                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                                            className="absolute -inset-1 bg-gradient-to-r from-orange-400/30 via-orange-500/30 to-orange-600/30 rounded-3xl blur-xl -z-10"
+                                        />
+
+                                        {/* College Mitra Badge */}
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <motion.div
+                                                animate={{ rotate: [0, 5, -5, 0] }}
+                                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                                className="bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 p-2.5 rounded-xl shadow-lg shadow-orange-500/40 group-hover:shadow-orange-500/60 transition-shadow"
+                                            >
+                                                <Sparkles className="w-4 h-4 text-white" />
+                                            </motion.div>
+                                            <div className="flex-1">
+                                                <motion.span
+                                                    className="font-bold text-gray-900 text-base block"
+                                                    animate={{ opacity: [1, 0.8, 1] }}
+                                                    transition={{ duration: 2, repeat: Infinity }}
+                                                >
+                                                    College Mitra
+                                                </motion.span>
+                                                <div className="flex items-center gap-1.5 mt-0.5">
+                                                    <motion.div
+                                                        animate={{
+                                                            scale: [1, 1.3, 1],
+                                                            opacity: [1, 0.7, 1]
+                                                        }}
+                                                        transition={{ repeat: Infinity, duration: 1.5 }}
+                                                        className="w-2 h-2 bg-green-500 rounded-full shadow-md shadow-green-500/60"
+                                                    />
+                                                    <span className="text-xs text-gray-600 font-medium">Online & Ready</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Greeting Message */}
+                                        <motion.div
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ delay: 1.5, duration: 0.5 }}
+                                            className="text-gray-800 text-sm leading-relaxed space-y-2.5"
+                                        >
+                                            <motion.p
+                                                animate={{ scale: [1, 1.05, 1] }}
+                                                transition={{ duration: 3, repeat: Infinity }}
+                                                className="font-bold text-orange-600 text-base flex items-center gap-2"
+                                            >
+                                                Hello Aspirants!!
+                                            </motion.p>
+                                            <p className="font-medium min-h-[80px]">
+                                                {typedText}
+                                                {isTyping && typedText.length < fullText.length && (
+                                                    <span className="inline-block w-0.5 h-4 bg-orange-600 ml-1 animate-pulse"></span>
+                                                )}
+                                            </p>
+                                        </motion.div>
+
+                                        {/* Quick Action Hint with Pulse */}
+                                        <motion.div
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ delay: 2, duration: 0.5 }}
+                                            className="mt-5 pt-4 border-t border-gray-300/50 flex items-center gap-2.5 text-xs"
+                                        >
+                                            <div className="flex gap-1.5">
+                                                <motion.div
+                                                    animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                                                    transition={{ duration: 1.5, repeat: Infinity }}
+                                                    className="w-1.5 h-1.5 bg-orange-500 rounded-full"
+                                                />
+                                                <motion.div
+                                                    animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                                                    transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
+                                                    className="w-1.5 h-1.5 bg-orange-500 rounded-full"
+                                                />
+                                                <motion.div
+                                                    animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                                                    transition={{ duration: 1.5, repeat: Infinity, delay: 0.6 }}
+                                                    className="w-1.5 h-1.5 bg-orange-500 rounded-full"
+                                                />
+                                            </div>
+                                            <span className="font-semibold text-gray-700 group-hover:text-orange-600 transition-colors">
+                                                Try the tools below to get started! ✨
+                                            </span>
+                                        </motion.div>
+                                    </motion.div>
+                                </motion.div>
+                            </div>
                         </div>
                     </div>
                 </div>
