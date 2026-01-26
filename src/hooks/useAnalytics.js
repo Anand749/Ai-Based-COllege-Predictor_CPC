@@ -37,7 +37,14 @@ const useAnalytics = () => {
 
             try {
                 // Use environment variable if available, fallback to localhost
-                const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+                let apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+                // Normalize URL: remove trailing slash and /api if present
+                if (apiUrl.endsWith('/')) apiUrl = apiUrl.slice(0, -1);
+                if (apiUrl.endsWith('/api')) apiUrl = apiUrl.slice(0, -4);
+
+                // Log for debugging
+                console.log('📊 [Analytics] Tracking to:', `${apiUrl}/api/view`);
 
                 await fetch(`${apiUrl}/api/view`, {
                     method: 'POST',
