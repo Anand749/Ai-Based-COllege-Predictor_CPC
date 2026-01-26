@@ -135,7 +135,7 @@ const CandidateCountChart = () => {
                         </svg>
                     </div>
                     <div>
-                        <h3 className="text-lg font-bold text-gray-900">Students Appeared</h3>
+                        <h3 className="text-lg font-bold text-gray-900">Students Registered (For Cap Rounds)</h3>
                         <p className="text-xs text-gray-500">MHT-CET PCM Candidates per Year</p>
                     </div>
                 </div>
